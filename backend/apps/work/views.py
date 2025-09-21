@@ -406,7 +406,7 @@ class TaskViewSet(viewsets.ModelViewSet):
             recent_invitation = Notification.objects.filter(
                 user=task.assignee,
                 type='PROJECT_INVITATION',
-                project_id=task.project.id,
+                payload__project_id=task.project.id,
                 created_at__gte=timezone.now() - timedelta(minutes=5)
             ).exists()
             
@@ -457,7 +457,7 @@ class TaskViewSet(viewsets.ModelViewSet):
                     recent_invitation = Notification.objects.filter(
                         user=assignee,
                         type='PROJECT_INVITATION',
-                        project_id=task.project.id,
+                        payload__project_id=task.project.id,
                         created_at__gte=timezone.now() - timedelta(minutes=5)
                     ).exists()
                     
@@ -561,7 +561,7 @@ class TaskViewSet(viewsets.ModelViewSet):
                     recent_invitation = Notification.objects.filter(
                         user=assignee,
                         type='PROJECT_INVITATION',
-                        project_id=task.project.id,
+                        payload__project_id=task.project.id,
                         created_at__gte=timezone.now() - timedelta(minutes=5)
                     ).exists()
                     
@@ -621,7 +621,7 @@ class TaskViewSet(viewsets.ModelViewSet):
                     recent_invitation = Notification.objects.filter(
                         user=user,
                         type='PROJECT_INVITATION',
-                        project_id=task.project.id,
+                        payload__project_id=task.project.id,
                         created_at__gte=timezone.now() - timedelta(minutes=5)
                     ).exists()
                     
