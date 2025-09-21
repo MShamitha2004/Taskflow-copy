@@ -1,0 +1,115 @@
+:root {
+  /* Dark purple theme */
+  --bg: #1a133a;        /* deep purple background */
+  --panel: #22194a;     /* darker purple panels */
+  --border: #3b2e69;    /* purple border */
+  --text: #eae8ff;      /* light lavender text */
+  --text-strong: #ffffff; /* brightest text for key labels */
+  --muted: #b3a6d6;     /* muted lavender */
+  --primary: #a78bfa;   /* violet-400 accent */
+  --column: #2a1d64;    /* column background shade */
+  --title: #6d28d9;     /* violet-700 for titles (dark purple) */
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  color: var(--text);
+  background: var(--bg);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Ensure page background stays themed even beyond body */
+html, #root {
+  background: var(--bg) !important;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+h1, h2, h3, h4 {
+  margin: 0;
+  font-weight: 700;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.btn {
+  background: var(--primary);
+  color: #0b1020;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.btn.secondary {
+  background: #0b1220;
+  color: var(--text);
+}
+.btn.ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.input, .select, .textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px;
+  background: white;
+}
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+
+.column { background: var(--column); border: 1px solid var(--border); border-radius: 6px; padding: 8px; min-height: 200px; color: var(--text-strong); }
+.card { background: #1d1548; border: 1px solid var(--border); border-radius: 6px; padding: 8px; margin-bottom: 8px; color: var(--text-strong); }
+
+/* Emphasize column headers and task titles */
+.column > div:first-child { color: var(--title) !important; font-weight: 800; font-size: 1.1rem; }
+.card > div:first-child { color: var(--title) !important; font-weight: 700; }
+
+.modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center; padding: 16px; }
+.modal { background: var(--panel); width: min(900px, 96vw); max-height: 90vh; overflow: auto; border-radius: 10px; padding: 16px; border: 1px solid var(--border); }
+
+.muted { color: var(--muted); font-size: 12px; }
+
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Remove default focus outlines/inner borders for cleaner look */
+button, a, input, select, textarea {
+  outline: none;
+}
+button:focus, a:focus, input:focus, select:focus, textarea:focus {
+  outline: none;
+  box-shadow: none;
+}
+button:active, a:active {
+  outline: none;
+  box-shadow: none;
+}
