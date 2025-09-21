@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # TaskFlow Management System
 
 A comprehensive task management platform inspired by Jira/Trello with integrated behavioral analytics. Built with React frontend and Django REST API backend.
@@ -276,3 +277,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **Built with ❤️ for better team productivity**
 
 
+=======
+# Taskflow-Management-System
+A comprehensive task management system with Kanban boards, behavioral analytics, and smart notifications. Built with React frontend and Django REST API backend.
+>>>>>>> dd2b365464ca853e6517ecd2eb03ed83bb5a5c44
