@@ -1,0 +1,140 @@
+# .dockerignore file for Django + React Application
+# This file tells Docker which files to ignore during the build process
+# Ignoring unnecessary files makes Docker builds faster and smaller
+
+# ===========================================
+# NODE.JS DEPENDENCIES
+# ===========================================
+# These will be installed fresh in the container
+node_modules/
+frontend/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ===========================================
+# PYTHON CACHE FILES
+# ===========================================
+# Python creates these automatically - we don't need them in Docker
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# ===========================================
+# VIRTUAL ENVIRONMENTS
+# ===========================================
+# We'll create a fresh environment in Docker
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# ===========================================
+# IDE AND EDITOR FILES
+# ===========================================
+# These are specific to your development environment
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ===========================================
+# GIT FILES
+# ===========================================
+# Git history is not needed in the container
+.git/
+.gitignore
+.gitattributes
+
+# ===========================================
+# DOCUMENTATION
+# ===========================================
+# Documentation files are not needed to run the app
+README.md
+docs/
+*.md
+
+# ===========================================
+# ENVIRONMENT VARIABLES
+# ===========================================
+# These contain sensitive information
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ===========================================
+# LOGS AND TEMPORARY FILES
+# ===========================================
+# These are created at runtime
+*.log
+logs/
+tmp/
+temp/
+
+# ===========================================
+# DATABASE FILES
+# ===========================================
+# We'll create a fresh database in the container
+db.sqlite3
+*.db
+
+# ===========================================
+# MEDIA FILES
+# ===========================================
+# User uploads should be handled separately in production
+media/
+uploads/
+
+# ===========================================
+# BUILD ARTIFACTS
+# ===========================================
+# These will be recreated during the build process
+dist/
+build/
+staticfiles/
+
+# ===========================================
+# TESTING FILES
+# ===========================================
+# Test coverage and reports
+.coverage
+htmlcov/
+.pytest_cache/
+.coverage.*
+
+# ===========================================
+# WHAT THIS FILE DOES:
+# ===========================================
+# 1. Excludes unnecessary files from Docker build context
+# 2. Makes Docker builds faster by reducing file transfer
+# 3. Makes Docker images smaller by excluding unused files
+# 4. Prevents sensitive files (.env) from being included
+# 5. Ensures clean, reproducible builds

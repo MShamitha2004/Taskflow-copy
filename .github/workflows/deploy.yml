@@ -1,0 +1,141 @@
+# GitHub Actions CI/CD Pipeline for Django + React Application
+# This file automates testing, building, and deployment of your application
+
+# ===========================================
+# WORKFLOW CONFIGURATION
+# ===========================================
+name: CI/CD Pipeline
+
+# When this workflow should run
+on:
+  # Trigger on every push to the main branch
+  push:
+    branches: [ main ]
+  
+  # Optional: Also trigger on pull requests to main
+  pull_request:
+    branches: [ main ]
+
+# ===========================================
+# JOBS CONFIGURATION
+# ===========================================
+jobs:
+  # Job 1: Test and Build
+  test-and-build:
+    # Run this job on Ubuntu (latest version)
+    runs-on: ubuntu-latest
+    
+    # ===========================================
+    # STEP 1: Checkout Repository Code
+    # ===========================================
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      # This downloads your repository code to the GitHub Actions runner
+      
+    # ===========================================
+    # STEP 2: Setup Python Environment
+    # ===========================================
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        # This installs Python 3.11 on the runner
+        
+    # ===========================================
+    # STEP 3: Setup Node.js Environment
+    # ===========================================
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        # This installs Node.js 18 on the runner
+        
+    # ===========================================
+    # STEP 4: Install Python Dependencies
+    # ===========================================
+    - name: Install Python dependencies
+      run: |
+        cd backend
+        pip install -r requirements.txt
+      # This installs all Django packages needed for your backend
+      
+    # ===========================================
+    # STEP 5: Install Node.js Dependencies
+    # ===========================================
+    - name: Install Node.js dependencies
+      run: |
+        cd frontend
+        npm install
+      # This installs all React packages needed for your frontend
+      
+    # ===========================================
+    # STEP 6: Run Django Tests
+    # ===========================================
+    - name: Run Django tests
+      run: |
+        cd backend
+        python manage.py test
+      # This runs all your Django unit tests to make sure nothing is broken
+      
+    # ===========================================
+    # STEP 7: Build React Frontend
+    # ===========================================
+    - name: Build React frontend
+      run: |
+        cd frontend
+        npm run build
+      # This creates optimized production files for your React app
+      
+    # ===========================================
+    # STEP 8: Build Docker Image
+    # ===========================================
+    - name: Build Docker image
+      run: |
+        docker build -t taskflow-app .
+      # This creates a Docker container with your entire application
+      
+    # ===========================================
+    # STEP 9: Test Docker Image
+    # ===========================================
+    - name: Test Docker image
+      run: |
+        # Start the container in the background
+        docker run -d -p 8000:8000 --name test-container taskflow-app
+        
+        # Wait a moment for the app to start
+        sleep 10
+        
+        # Test if the app is responding
+        curl -f http://localhost:8000 || exit 1
+        
+        # Clean up the test container
+        docker stop test-container
+        docker rm test-container
+      # This makes sure your Docker container actually works
+      
+    # ===========================================
+    # STEP 10: Deployment Placeholder
+    # ===========================================
+    - name: Deploy step placeholder
+      run: |
+        echo "🚀 Deploy step here!"
+        echo "This is where you would add real deployment commands"
+        echo "Examples:"
+        echo "- Deploy to AWS, Google Cloud, or Azure"
+        echo "- Deploy to Heroku, Render, or DigitalOcean"
+        echo "- Deploy to your own server"
+      # This is just a placeholder - you'll add real deployment later
+
+# ===========================================
+# WHAT THIS PIPELINE DOES:
+# ===========================================
+# 1. Runs automatically when you push code to main branch
+# 2. Sets up Python and Node.js environments
+# 3. Installs all dependencies
+# 4. Runs Django tests to catch bugs
+# 5. Builds React frontend for production
+# 6. Creates and tests Docker container
+# 7. Provides a placeholder for future deployment steps
+#
+# This ensures your code is always tested and ready for deployment!
