@@ -4,6 +4,10 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  build: {
+    outDir: 'dist',
+    assetsDir: 'static',
+  },
   define: {
     'import.meta.env.VITE_GOOGLE_CLIENT_ID': JSON.stringify('770268825896-a4evs6pveo1cah6ks3fddllmlesqgkot.apps.googleusercontent.com'),
   },
