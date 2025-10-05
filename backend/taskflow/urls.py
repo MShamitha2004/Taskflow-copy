@@ -23,13 +23,8 @@ from django.views.generic import RedirectView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('apps.core.urls')),
-]
-
-# Serve static files BEFORE the catch-all React app route
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-# Catch-all for React app (must be LAST)
-urlpatterns += [
     path('', include('apps.core.urls')),
 ]
+
+# WhiteNoise handles static files automatically
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
