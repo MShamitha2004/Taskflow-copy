@@ -1,10 +1,9 @@
-# Multi-stage Dockerfile for Django + React Application
-# This file creates a container that runs both Django backend and React frontend
+# Optimized Multi-stage Dockerfile for Django + React Application
+# This file creates a smaller, more efficient container
 
 # ===========================================
-# STAGE 1: Build React Frontend
+# STAGE 1: Build React Frontend (Optimized)
 # ===========================================
-# Use Node.js 18 as the base image for building React
 FROM node:18-alpine AS frontend-builder
 
 # Set working directory for frontend
@@ -13,73 +12,79 @@ WORKDIR /app/frontend
 # Copy package files first (for better Docker layer caching)
 COPY frontend/package*.json ./
 
-# Install Node.js dependencies
-RUN npm install
+# Install all dependencies (including dev dependencies for build)
+RUN npm ci && npm cache clean --force
 
-# Copy all frontend source code
-COPY frontend/ .
+# Copy only necessary source files
+COPY frontend/src ./src
+COPY frontend/public ./public
+COPY frontend/index.html ./
+COPY frontend/vite.config.js ./
 
-# Build React app for production
-# This creates optimized, minified files in 'dist' folder
-RUN npm run build
+# Build React app for production and clean up
+RUN npm run build && rm -rf node_modules
 
 # ===========================================
-# STAGE 2: Setup Django Backend
+# STAGE 2: Setup Django Backend (Optimized)
 # ===========================================
-# Use Python 3.11 as the base image for Django
-FROM python:3.11-alpine AS backend
+FROM python:3.11-slim AS backend
 
 # Set working directory for backend
 WORKDIR /app
 
-# Install system dependencies needed for Python packages
-RUN apk add --no-cache \
+# Install only essential system dependencies
+RUN apt-get update && apt-get install -y \
     gcc \
-    musl-dev \
-    postgresql-dev \
-    && rm -rf /var/cache/apk/*
+    && rm -rf /var/lib/apt/lists/*
 
 # Copy Django requirements file
 COPY backend/requirements.txt .
 
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Install Python dependencies (optimized)
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt && \
+    pip cache purge
 
-# Copy Django backend code
-COPY backend/ .
+# Copy only necessary Django files
+COPY backend/apps ./apps
+COPY backend/taskflow ./taskflow
+COPY backend/manage.py ./
 
-# Copy React build files from Stage 1 to Django's static directory
-# This allows Django to serve the React app
-COPY --from=frontend-builder /app/frontend/dist ./staticfiles/
+# Copy React build files from Stage 1
+COPY --from=frontend-builder /app/frontend/dist/index.html ./staticfiles/
+COPY --from=frontend-builder /app/frontend/dist/static ./staticfiles/static
 
 # ===========================================
-# STAGE 3: Final Setup and Run
+# STAGE 3: Final Runtime (Minimal)
 # ===========================================
-# Set environment variables for Django
+FROM python:3.11-slim AS final
+
+# Set working directory
+WORKDIR /app
+
+# Copy Python packages from backend stage
+COPY --from=backend /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+COPY --from=backend /usr/local/bin /usr/local/bin
+
+# Copy application files
+COPY --from=backend /app .
+
+# Set environment variables
 ENV PYTHONPATH=/app
 ENV DJANGO_SETTINGS_MODULE=taskflow.settings
+ENV PYTHONUNBUFFERED=1
 
-# Create a non-root user for security
-RUN adduser -D -s /bin/sh appuser && chown -R appuser:appuser /app
+# Create non-root user
+RUN useradd --create-home --shell /bin/bash appuser && \
+    chown -R appuser:appuser /app
 USER appuser
 
-# Expose port 8000 (Django's default port)
+# Expose port 8000
 EXPOSE 8000
 
-# Health check to ensure container is running properly
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD python manage.py check || exit 1
 
-# Default command: Run Django development server
-# 0.0.0.0 means listen on all network interfaces (needed for Docker)
+# Default command
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-
-# ===========================================
-# What this Dockerfile does:
-# ===========================================
-# 1. Builds React frontend with Node.js
-# 2. Sets up Django backend with Python
-# 3. Copies React build files to Django's static directory
-# 4. Runs Django commands (collectstatic, migrate) automatically
-# 5. Starts Django server on port 8000
-# 6. Serves both API and React frontend from the same container
