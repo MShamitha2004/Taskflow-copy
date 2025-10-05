@@ -54,6 +54,9 @@ COPY backend/manage.py ./
 COPY --from=frontend-builder /app/frontend/dist/index.html ./staticfiles/
 COPY --from=frontend-builder /app/frontend/dist/static ./staticfiles/static
 
+# Collect static files
+RUN python manage.py collectstatic --noinput
+
 # ===========================================
 # STAGE 3: Final Runtime (Minimal)
 # ===========================================
