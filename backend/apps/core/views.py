@@ -22,14 +22,14 @@ def serve_react_app(request):
             if os.path.exists(css_path):
                 with open(css_path, 'r') as f:
                     css_content = f.read()
-                content = content.replace('<link rel="stylesheet" href="/static/index-DCoIFvll.css">', f'<style>{css_content}</style>')
+                content = content.replace('<link rel="stylesheet" crossorigin href="/static/index-DCoIFvll.css">', f'<style>{css_content}</style>')
             
             # Read JS file
             js_path = os.path.join(settings.STATIC_ROOT, 'static', 'index-CtHhW0Cc.js')
             if os.path.exists(js_path):
                 with open(js_path, 'r') as f:
                     js_content = f.read()
-                content = content.replace('<script type="module" src="/static/index-CtHhW0Cc.js"></script>', f'<script type="module">{js_content}</script>')
+                content = content.replace('<script type="module" crossorigin src="/static/index-CtHhW0Cc.js"></script>', f'<script type="module">{js_content}</script>')
         except Exception as e:
             # If inlining fails, just return the original content
             pass
