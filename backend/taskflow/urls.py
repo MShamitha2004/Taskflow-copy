@@ -22,8 +22,8 @@ from django.views.generic import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', RedirectView.as_view(url='/api/health/', permanent=False)),
     path('api/', include('apps.core.urls')),
+    path('', include('apps.core.urls')),
 ]
 
 if settings.DEBUG:
