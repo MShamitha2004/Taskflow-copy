@@ -122,7 +122,7 @@ CORS_ALLOWED_HEADERS = [
 # Provide a list of allowed OAuth client IDs to validate 'aud' claim of Google ID tokens
 # Example: GOOGLE_CLIENT_IDS = ["1234567890-abc.apps.googleusercontent.com"]
 GOOGLE_CLIENT_IDS = [
-    "770268825896-a4evs6pveo1cah6ks3fddllmlesqgkot.apps.googleusercontent.com",
+    "712441665777-nt4qmhrmauna2d95uf9r8qk6gc4oh24p.apps.googleusercontent.com",
 ]
 
 # Frontend base URL for password reset links

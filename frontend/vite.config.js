@@ -9,7 +9,7 @@ export default defineConfig({
     assetsDir: 'static',
   },
   define: {
-    'import.meta.env.VITE_GOOGLE_CLIENT_ID': JSON.stringify('770268825896-a4evs6pveo1cah6ks3fddllmlesqgkot.apps.googleusercontent.com'),
+    'import.meta.env.VITE_GOOGLE_CLIENT_ID': JSON.stringify('712441665777-nt4qmhrmauna2d95uf9r8qk6gc4oh24p.apps.googleusercontent.com'),
   },
   server: {
     host: '127.0.0.1',
