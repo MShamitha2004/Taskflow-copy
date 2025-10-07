@@ -57,6 +57,9 @@ RUN mkdir -p ./staticfiles/static
 COPY --from=frontend-builder /app/frontend/dist/index.html ./staticfiles/
 COPY --from=frontend-builder /app/frontend/dist/static ./staticfiles/static/
 
+# Run database migrations
+RUN python manage.py migrate --noinput
+
 # Collect static files (this will also handle Django's own static files)
 RUN python manage.py collectstatic --noinput
 
