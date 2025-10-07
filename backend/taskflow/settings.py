@@ -159,11 +159,6 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # WhiteNoise configuration
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Additional static files directories
-STATICFILES_DIRS = [
-    BASE_DIR / 'staticfiles',
-]
-
 # Media files (user uploads)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'

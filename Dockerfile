@@ -50,11 +50,14 @@ COPY backend/apps ./apps
 COPY backend/taskflow ./taskflow
 COPY backend/manage.py ./
 
+# Create staticfiles directory
+RUN mkdir -p ./staticfiles/static
+
 # Copy React build files from Stage 1
 COPY --from=frontend-builder /app/frontend/dist/index.html ./staticfiles/
 COPY --from=frontend-builder /app/frontend/dist/static ./staticfiles/static/
 
-# Collect static files
+# Collect static files (this will also handle Django's own static files)
 RUN python manage.py collectstatic --noinput
 
 # ===========================================
