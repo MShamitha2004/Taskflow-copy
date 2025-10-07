@@ -52,7 +52,7 @@ COPY backend/manage.py ./
 
 # Copy React build files from Stage 1
 COPY --from=frontend-builder /app/frontend/dist/index.html ./staticfiles/
-COPY --from=frontend-builder /app/frontend/dist/static ./staticfiles/static
+COPY --from=frontend-builder /app/frontend/dist/static ./staticfiles/static/
 
 # Collect static files
 RUN python manage.py collectstatic --noinput

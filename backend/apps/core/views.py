@@ -17,19 +17,25 @@ def serve_react_app(request):
         
         # Try to inline CSS and JS to avoid static file serving issues
         try:
-            # Read CSS file
-            css_path = os.path.join(settings.STATIC_ROOT, 'static', 'index-DCoIFvll.css')
-            if os.path.exists(css_path):
-                with open(css_path, 'r') as f:
-                    css_content = f.read()
-                content = content.replace('<link rel="stylesheet" crossorigin href="/static/index-DCoIFvll.css">', f'<style>{css_content}</style>')
-            
-            # Read JS file
-            js_path = os.path.join(settings.STATIC_ROOT, 'static', 'index-CtHhW0Cc.js')
-            if os.path.exists(js_path):
-                with open(js_path, 'r') as f:
-                    js_content = f.read()
-                content = content.replace('<script type="module" crossorigin src="/static/index-CtHhW0Cc.js"></script>', f'<script type="module">{js_content}</script>')
+            # Look for CSS files in the static directory
+            static_dir = os.path.join(settings.STATIC_ROOT, 'static')
+            if os.path.exists(static_dir):
+                for file in os.listdir(static_dir):
+                    if file.endswith('.css'):
+                        css_path = os.path.join(static_dir, file)
+                        with open(css_path, 'r') as f:
+                            css_content = f.read()
+                        # Replace the CSS link with inline styles
+                        css_link_pattern = f'<link rel="stylesheet" crossorigin href="/static/{file}">'
+                        content = content.replace(css_link_pattern, f'<style>{css_content}</style>')
+                    
+                    elif file.endswith('.js'):
+                        js_path = os.path.join(static_dir, file)
+                        with open(js_path, 'r') as f:
+                            js_content = f.read()
+                        # Replace the JS script with inline script
+                        js_script_pattern = f'<script type="module" crossorigin src="/static/{file}"></script>'
+                        content = content.replace(js_script_pattern, f'<script type="module">{js_content}</script>')
         except Exception as e:
             # If inlining fails, just return the original content
             pass

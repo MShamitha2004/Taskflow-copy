@@ -11,6 +11,8 @@ frontend/node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.npm/
+.yarn/
 
 # ===========================================
 # PYTHON CACHE FILES
@@ -120,6 +122,17 @@ uploads/
 dist/
 build/
 staticfiles/
+frontend/dist/
+frontend/build/
+
+# ===========================================
+# DEVELOPMENT FILES
+# ===========================================
+# Files only needed for development
+.env.example
+.env.development
+.env.test
+*.local
 
 # ===========================================
 # TESTING FILES
