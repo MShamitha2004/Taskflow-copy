@@ -4,28 +4,38 @@ services:
     env: python
     plan: free
     buildCommand: |
+      echo "Starting build process..."
+      
       # Install Node.js for frontend build
       curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
       sudo apt-get install -y nodejs
+      echo "Node.js installed"
       
       # Build React frontend
       cd frontend
       npm install
       npm run build
+      echo "React frontend built"
       cd ..
       
       # Install Python dependencies
       cd backend
       pip install -r requirements.txt
+      echo "Python dependencies installed"
       
       # Run database migrations
       python manage.py migrate --noinput
+      echo "Database migrations completed"
       
       # Collect static files
       python manage.py collectstatic --noinput
+      echo "Static files collected"
       cd ..
+      
+      echo "Build process completed successfully"
     startCommand: |
       cd backend
+      echo "Starting Django server..."
       python manage.py runserver 0.0.0.0:$PORT
     envVars:
       - key: DEBUG
@@ -34,3 +44,5 @@ services:
         value: taskflow-copy.onrender.com
       - key: SECRET_KEY
         generateValue: true
+      - key: CORS_ALLOW_ALL_ORIGINS
+        value: "True"
