@@ -759,7 +759,7 @@ function Login() {
         try { localStorage.setItem('userEmail', email) } catch {}
         if (data.refresh) try { localStorage.setItem('refreshToken', data.refresh) } catch {}
         setError('')
-        navigate('/workspaces', { replace: true })
+        navigate('/home', { replace: true })
       } else {
         let message = 'Login failed'
         try {
@@ -837,7 +837,7 @@ function Login() {
         localStorage.setItem('accessToken', data.access)
         try { localStorage.setItem('userEmail', otpEmail) } catch {}
         if (data.refresh) try { localStorage.setItem('refreshToken', data.refresh) } catch {}
-        navigate('/workspaces', { replace: true })
+        navigate('/home', { replace: true })
       } else {
         const errorData = await res.json().catch(() => ({ detail: 'Invalid OTP' }))
         setOtpError(errorData.detail || 'Invalid OTP')
@@ -4367,7 +4367,7 @@ function Signup() {
         localStorage.setItem('accessToken', data.access)
         try { localStorage.setItem('userEmail', formData.email) } catch {}
         if (data.refresh) try { localStorage.setItem('refreshToken', data.refresh) } catch {}
-        navigate('/workspaces', { replace: true })
+        navigate('/home', { replace: true })
       } else {
         navigate('/login', { replace: true })
       }
